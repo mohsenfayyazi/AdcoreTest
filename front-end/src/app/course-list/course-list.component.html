@@ -1,0 +1,70 @@
+<div class="course-container">
+  <p></p>
+  <!-- Add New Course Button -->
+  <div class="button-container">
+    <button class="custom-button" (click)="editCourse('')">Add New Course</button>
+  </div>
+
+  <!-- Search Box -->
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="searchText" (ngModelChange)="updateDisplayedCourses()" placeholder="Search courses">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="displayedCourses" class="mat-elevation-z8">
+    <!-- Course Name Column -->
+    <ng-container matColumnDef="courseName">
+      <th mat-header-cell *matHeaderCellDef> Course Name </th>
+      <td mat-cell *matCellDef="let course" matTooltip="{{course.CourseDescription}}">
+        <button mat-icon-button color="warn" (click)="deleteCourse(course._id)">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="editCourse(course._id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        {{course.CourseName}}
+      </td>
+      <td mat-cell *matCellDef="let course">
+        <button mat-icon-button color="warn" (click)="deleteCourse(course._id)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <!-- Location Column -->
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> Location </th>
+      <td mat-cell *matCellDef="let course" matTooltip="{{course.CourseDescription}}">
+        {{course.Country}}, {{course.City}}, {{course.University}}
+      </td>
+    </ng-container>
+    <!-- Start Date Column -->
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef> Start Date </th>
+      <td mat-cell *matCellDef="let course" matTooltip="{{course.CourseDescription}}">
+        {{course.StartDate | date}}
+      </td>
+    </ng-container>
+    <!-- Length Column -->
+    <ng-container matColumnDef="length">
+      <th mat-header-cell *matHeaderCellDef> Length </th>
+      <td mat-cell *matCellDef="let course" matTooltip="{{course.CourseDescription}}">
+        {{course.length}}
+      </td>
+    </ng-container>
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let course" matTooltip="{{course.CourseDescription}}">
+        {{course.Price | currency: course.Currency}}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['courseName', 'location', 'start', 'length', 'price']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['courseName', 'location', 'start', 'length', 'price'];"></tr>
+  </table>
+  <mat-paginator [length]="totalItems" [pageSize]="perPage" [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
